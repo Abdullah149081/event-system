@@ -1,0 +1,15 @@
+{
+  "[django-html]": {
+    "editor.defaultFormatter": "monosans.djlint",
+    "editor.formatOnSave": true
+  },
+  "files.watcherExclude": {
+    "**/dist/**": false
+  },
+  "files.exclude": {
+    "**/dist/**": false
+  },
+  "search.exclude": {
+    "**/dist/**": false
+  }
+}
