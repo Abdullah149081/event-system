@@ -5,4 +5,8 @@
   .e-my {
     @apply my-8 lg:my-28;
   }
+
+  .active-nav {
+    @apply text-[green] underline underline-offset-8 decoration-[#30c957];
+  }
 }
