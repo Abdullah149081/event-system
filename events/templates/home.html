@@ -1,0 +1,39 @@
+{% load nav_tags %}
+{% extends "base.html" %}
+{% block title %}
+    Event Home Page
+{% endblock title %}
+{% block theme %}
+    <section class="bg-white  shadow">
+        <header class="e-container">
+            <nav class="flex items-center h-[100px] justify-between">
+                <a href="{% url 'home' %}" class="flex items-center gap-0.5">
+                    <span class="rounded-full text-2xl font-bold text-white  px-2.5 py-1 bg-[#30c957]">E</span>
+                    <span class="text-2xl font-bold  select-none uppercase">ventSys</span>
+                </a>
+                <ul class="flex items-center gap-8 uppercase">
+                    <a href="{% url 'home' %}"
+                       class="text-gray-700 hover:text-[green] tracking-wider underline underline-offset-8 decoration-[#30c957] transition duration-200 {% nav_active '/' %}">
+                        Home
+                    </a>
+                    <li>
+                        <a href=""
+                           class="text-gray-700 hover:text-[green] tracking-wider underline underline-offset-8 decoration-[#30c957] transition duration-200 {% if request.path == '/about/' %}text-[green]{% endif %}">About</a>
+                    </li>
+                    <li>
+                        <a href=""
+                           class="text-gray-700 hover:text-[green] tracking-wider underline underline-offset-8 decoration-[#30c957] {% if request.path == '/events/' %}text-[green]{% endif %}">Events</a>
+                    </li>
+                    <li>
+                        <a href=""
+                           class="text-gray-700 hover:text-[green] tracking-wider underline underline-offset-8 decoration-[#30c957] {% if request.path == '/contact/' %}text-[green]{% endif %}">Contact</a>
+                    </li>
+                    <li>
+                        <a href=""
+                           class="text-gray-700 hover:text-[green] tracking-wider {% if request.path == '/dashboard/' %}text-[green]{% endif %}">Dashboard</a>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+    </section>
+{% endblock theme %}

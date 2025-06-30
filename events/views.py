@@ -3,8 +3,8 @@ from django.shortcuts import render
 # Create your views here.
 
 
-def show_event(request):
+def home(request):
     """
-    Render the event show page.
+    Render the event home page.
     """
-    return render(request, "show.html")
+    return render(request, "home.html")
