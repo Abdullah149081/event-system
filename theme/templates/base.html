@@ -27,5 +27,61 @@
       {% block theme %}
       {% endblock theme %}
     </main>
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const toggleBtn = document.getElementById("nav-toggle");
+        const menu = document.getElementById("nav-menu");
+        const navIcon = document.getElementById("nav-icon");
+
+        if (!toggleBtn || !menu || !navIcon) return;
+
+        function openMenu() {
+            menu.classList.remove("max-h-0", "opacity-0", "overflow-hidden");
+            menu.classList.add("max-h-[500px]", "opacity-100");
+            navIcon.textContent = "✕";
+            toggleBtn.setAttribute("aria-expanded", "true");
+        }
+
+        function closeMenu() {
+            menu.classList.remove("max-h-[500px]", "opacity-100");
+            menu.classList.add("max-h-0", "opacity-0", "overflow-hidden");
+            navIcon.textContent = "☰";
+            toggleBtn.setAttribute("aria-expanded", "false");
+        }
+
+        function toggleMenu() {
+            if (menu.classList.contains("max-h-0")) {
+                openMenu();
+            } else {
+                closeMenu();
+            }
+        }
+
+        toggleBtn.addEventListener("click", toggleMenu);
+
+       
+        document.addEventListener("click", function (e) {
+            if (
+                !menu.contains(e.target) &&
+                !toggleBtn.contains(e.target) &&
+                window.innerWidth < 768 &&
+                !menu.classList.contains("max-h-0")
+            ) {
+                closeMenu();
+            }
+        });
+
+       
+        window.addEventListener("resize", function () {
+            if (window.innerWidth >= 768) {
+                menu.classList.remove("max-h-0", "opacity-0", "overflow-hidden", "max-h-[500px]", "opacity-100");
+                navIcon.textContent = "☰";
+                toggleBtn.setAttribute("aria-expanded", "false");
+            } else {
+                closeMenu();
+            }
+        });
+    });
+    </script>
   </body>
 </html>
