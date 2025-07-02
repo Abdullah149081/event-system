@@ -1,0 +1,67 @@
+{% load static %}
+<footer class="bg-gray-900 text-white mt-16">
+    <div class="bg-gray-800 py-8">
+        <div class="e-container text-center">
+            <h2 class="text-2xl font-bold text-white uppercase mb-2">Join Our Newsletter</h2>
+            <p class="text-gray-400 mb-4">Stay updated with upcoming events and announcements</p>
+            <form method="post"
+                  action="#"
+                  class="max-w-xl mx-auto flex items-center gap-4">
+                {% csrf_token %}
+                <input type="email"
+                       name="email"
+                       required
+                       placeholder="Enter your email"
+                       class="w-full flex-1 px-4 py-3 rounded-md bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#30c957]" />
+                <button type="submit"
+                        class="px-6 py-3 bg-[#30c957] text-white rounded-md  transition duration-300 uppercase font-semibold hover:bg-[#f56719] cursor-pointer">
+                    Subscribe
+                </button>
+            </form>
+        </div>
+    </div>
+    <div class="e-container py-10 grid grid-cols-1 md:grid-cols-3 gap-10">
+        <div>
+            <a href="{% url 'home' %}" class="flex items-center gap-2">
+                <span class="rounded-full text-xl font-bold text-white px-2.5 py-1 bg-[#30c957]">E</span>
+                <span class="text-xl font-semibold uppercase">ventSys</span>
+            </a>
+            <p class="mt-4 text-gray-400">
+                EventSys helps you create, manage, and track your events seamlessly. Join us to organize smarter.
+            </p>
+        </div>
+        <div>
+            <h3 class="text-lg font-semibold mb-4 uppercase">Quick Links</h3>
+            <ul class="space-y-2 text-gray-400">
+                <li>
+                    <a href="{% url 'home' %}" class="hover:text-[#30c957]">Home</a>
+                </li>
+                <li>
+                    <a href="#" class="hover:text-[#30c957]">About</a>
+                </li>
+                <li>
+                    <a href="#" class="hover:text-[#30c957]">Events</a>
+                </li>
+                <li>
+                    <a href="#" class="hover:text-[#30c957]">Contact</a>
+                </li>
+                <li>
+                    <a href="#" class="hover:text-[#30c957]">Dashboard</a>
+                </li>
+            </ul>
+        </div>
+        <div>
+            <h3 class="text-lg font-semibold mb-4 uppercase">Follow Us</h3>
+            <div class="flex gap-4 text-xl text-gray-400">
+                <a href="#" class="hover:text-[#30c957]"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="hover:text-[#30c957]"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="hover:text-[#30c957]"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="hover:text-[#30c957]"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="text-center text-gray-500 text-sm py-4 border-t border-gray-700">
+        © {% now "Y" %}
+        EventSys. All rights reserved.
+    </div>
+</footer>
