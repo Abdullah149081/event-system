@@ -1,0 +1,16 @@
+<section class="bg-gray-100 e-my">
+    <div class="e-container">
+        <h1 class="text-4xl font-bold text-center text-gray-800 py-6">Events</h1>
+        <p class="text-center text-gray-500 mb-8">Explore our upcoming events and find the perfect one for you!</p>
+    </div>
+    <section class="sticky top-0 z-50 w-full bg-[#30c957]/5 backdrop-blur-md shadow-md border-b border-[#30c957]/5">
+        <div class="e-container py-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {% include "event/search.html" %}
+                {% include "event/category.html" %}
+                {% include "event/filter.html" %}
+            </div>
+        </div>
+    </section>
+    {% include "event/eventCard.html" %}
+</section>
