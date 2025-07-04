@@ -1,1 +1,16 @@
+/* 
+    This file does not use Django project settings.
+    It is used by the Tailwind CSS extension as suggested by Tailwind CSS.
+*/
+
 @import "tailwindcss";
+
+@theme inline {
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+}
+
+:root {
+  --primary: oklch(74.03% 0.233 142.14);
+  --secondary: oklch(70.36% 0.233 49.41);
+}

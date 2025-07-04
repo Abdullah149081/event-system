@@ -7,7 +7,7 @@
   }
 
   .active-nav {
-    @apply text-[green] underline underline-offset-8 decoration-[#30c957];
+    @apply text-[green] underline underline-offset-8 decoration-primary;
   }
   .nav_class {
     @apply hover:text-[green] tracking-wider transition duration-200;

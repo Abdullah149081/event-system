@@ -9,3 +9,4 @@ djlint==1.36.4
 django-debug-toolbar==5.2.0
 ptpython==3.0.30
 django-active-link==0.2.2
+Faker==37.4.0
