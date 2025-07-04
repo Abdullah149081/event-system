@@ -1,0 +1,23 @@
+{% load static %}
+<section class="relative h-[200px] lg:h-[700px] w-full overflow-hidden  shadow-lg">
+    <img src="{% static 'assets/banner.jpg' %}"
+         alt="Event Banner"
+         width="100%"
+         height="100%"
+         class="absolute inset-0 w-full h-full object-cover object-center z-0">
+    <div class="absolute inset-0 bg-black/50 z-10"></div>
+    <div class="e-container relative z-20 flex items-center justify-center h-full">
+        <div class="text-center space-y-4 lg:space-y-7">
+            <h1 class="uppercase text-sm lg:text-lg text-primary">Welcome to the Event System</h1>
+            <p class="text-white lg:text-[60px] font-bold uppercase tracking-wider">Manage your events with ease</p>
+            <div class="space-y-4 hidden md:block">
+                <p class="text-white/80 lg:text-lg uppercase tracking-wider">Create, update, and delete events effortlessly</p>
+                <p class="text-white/80 tracking-wider lg:text-lg uppercase">Join us and start managing your events today!</p>
+            </div>
+            <a href="#"
+               class="inline-block text-sm mt-4 px-6 py-3 text-white bg-primary rounded-full hover:bg-secondary uppercase transition duration-300   text-center">
+                Get Started
+            </a>
+        </div>
+    </div>
+</section>

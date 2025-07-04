@@ -50,3 +50,19 @@ def home(request):
     }
 
     return render(request, "home.html", context)
+
+
+def event_detail(request, event_id):
+
+    event = (
+        Event.objects.select_related("category")
+        .prefetch_related("participants")
+        .get(id=event_id)
+    )
+
+    context = {
+        "navbar": get_navbar(request),
+        "event": event,
+    }
+
+    return render(request, "event/eventDetails.html", context)
