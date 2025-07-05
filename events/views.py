@@ -1,25 +1,9 @@
 from django.shortcuts import render
-from events.models import Event, Category
-
-
-def get_navbar(request):
-    current_path = request.path
-    nav_items = [
-        {"name": "Home", "url": "/", "active": False},
-        {"name": "About", "url": "/about/", "active": False},
-        {"name": "Events", "url": "/events/", "active": False},
-        {"name": "Contact", "url": "/contact/", "active": False},
-        {"name": "Dashboard", "url": "/dashboard/", "active": False},
-    ]
-    for item in nav_items:
-        if item["url"] == current_path:
-            item["active"] = True
-            break
-    return nav_items
+from events.models import Event, Category, Participant
+from django.utils import timezone
 
 
 def home(request):
-    navbar = get_navbar(request)
 
     query = request.GET.get("query", "").strip()
     category = request.GET.get("category", "").strip()
@@ -44,7 +28,6 @@ def home(request):
     categories = Category.objects.all()
 
     context = {
-        "navbar": navbar,
         "events": events,
         "categories": categories,
     }
@@ -61,8 +44,41 @@ def event_detail(request, event_id):
     )
 
     context = {
-        "navbar": get_navbar(request),
         "event": event,
     }
 
     return render(request, "event/eventDetails.html", context)
+
+
+def dashboard(request):
+    current_date = timezone.now().date()
+
+    events = list(
+        Event.objects.select_related("category").prefetch_related("participants")
+    )
+
+    context = {
+        "events": events,
+        "participants_count": Participant.objects.count(),
+        "upcoming_events": Event.objects.filter(date__gte=current_date),
+        "past_events": Event.objects.filter(date__lt=current_date),
+    }
+
+    return render(request, "Dashboard.html", context)
+
+
+def event(request):
+    current_date = timezone.now().date()
+
+    events = list(
+        Event.objects.select_related("category").prefetch_related("participants")
+    )
+
+    context = {
+        "events": events,
+        "participants_count": Participant.objects.count(),
+        "upcoming_events": Event.objects.filter(date__gte=current_date),
+        "past_events": Event.objects.filter(date__lt=current_date),
+    }
+
+    return render(request, "dashboard/EventDashboard.html", context)

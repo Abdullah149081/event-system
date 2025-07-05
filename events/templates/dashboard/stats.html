@@ -1,0 +1,18 @@
+<div class="e-container e-my grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div class="bg-white shadow rounded-xl p-6 text-center border-l-4 border-secondary border ">
+        <h2 class="text-2xl font-bold text-gray-800">{{ participants_count }}</h2>
+        <p class="text-sm text-gray-500 mt-1">Total Participants</p>
+    </div>
+    <div class="bg-white shadow rounded-xl p-6 text-center border-l-4 border border-primary">
+        <h2 class="text-2xl font-bold text-gray-800">{{ events|length }}</h2>
+        <p class="text-sm text-gray-500 mt-1">Total Events</p>
+    </div>
+    <div class="bg-white shadow rounded-xl p-6 text-center border-l-4 border border-green-500">
+        <h2 class="text-2xl font-bold text-gray-800">{{ upcoming_events|length }}</h2>
+        <p class="text-sm text-gray-500 mt-1">Upcoming Events</p>
+    </div>
+    <div class="bg-white shadow rounded-xl p-6 text-center border-l-4 border  border-red-500">
+        <h2 class="text-2xl font-bold text-gray-800">{{ past_events|length }}</h2>
+        <p class="text-sm text-gray-500 mt-1">Past Events</p>
+    </div>
+</div>

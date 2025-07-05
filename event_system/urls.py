@@ -17,12 +17,13 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include
-from events.views import home
+from events.views import home, dashboard
 
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("events/", include("events.urls")),
     path("", home, name="home"),
+    path("dashboard/", dashboard, name="dashboard"),
     path("__reload__/", include("django_browser_reload.urls")),
 ]
