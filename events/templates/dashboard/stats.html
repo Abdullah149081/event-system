@@ -15,4 +15,18 @@
         <h2 class="text-2xl font-bold text-gray-800">{{ past_events|length }}</h2>
         <p class="text-sm text-gray-500 mt-1">Past Events</p>
     </div>
+    <div>
+        <h2 class="text-2xl font-semibold text-primary mb-2">Today’s Events</h2>
+        {% if today_events %}
+            <ul class="space-y-3">
+                {% for event in today_events %}
+                    <li class="bg-white p-4 rounded shadow border-l-4 border-primary">
+                        <strong>{{ event.name }}</strong> - {{ event.time }} at {{ event.location }}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="text-gray-500">No events today.</p>
+        {% endif %}
+    </div>
 </div>

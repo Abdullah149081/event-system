@@ -41,17 +41,14 @@ def home(request):
 
 
 def event_detail(request, event_id):
-    events = all_events()
     try:
-        event = events.get(id=event_id)
+        event = (
+            Event.objects.select_related("category")
+            .prefetch_related("participants")
+            .get(id=event_id)
+        )
     except Event.DoesNotExist:
-        return HttpResponseNotFound
-    ("Event not found")
-    event = (
-        Event.objects.select_related("category")
-        .prefetch_related("participants")
-        .get(id=event_id)
-    )
+        return HttpResponseNotFound("Event not found")
 
     context = {
         "event": event,
@@ -66,6 +63,7 @@ def dashboard(request):
 
     context = {
         "events": events,
+        "today_events": events.filter(date=current_date),
         "participants_count": Participant.objects.count(),
         "upcoming_events": Event.objects.filter(date__gte=current_date),
         "past_events": Event.objects.filter(date__lt=current_date),
