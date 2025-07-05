@@ -2,38 +2,41 @@ def navbar_context(request):
     path = request.path
 
     nav_items = [
-        {"name": "Home", "url": "/", "active": False},
-        {"name": "About", "url": "/about/", "active": False},
-        {"name": "Contact", "url": "/contact/", "active": False},
-        {"name": "Dashboard", "url": "/dashboard/", "active": False},
+        {"name": "Home", "url": "/"},
+        {"name": "About", "url": "/about/"},
+        {"name": "Contact", "url": "/contact/"},
+        {"name": "Dashboard", "url": "/dashboard/"},
+        {"name": "Events", "url": "/events/dashboard/EventDashboard"},
+        {"name": "Participants", "url": "/participants/dashboard/ParticipantDashboard"},
+        {"name": "Categories", "url": "/categories/dashboard/CategoryDashboard"},
     ]
 
-    if path.startswith("/dashboard"):
-        nav_items = [
-            {"name": "Home", "url": "/", "active": path == "/"},
-            {
-                "name": "Dashboard",
-                "url": "/dashboard/",
-                "active": path == "/dashboard/",
-            },
-            {
-                "name": "Events",
-                "url": "events/dashboard/EventDashboard.html",
-                "active": path.startswith("/events/"),
-            },
-            {
-                "name": "Participants",
-                "url": "events/dashboard/participants.html",
-                "active": path.startswith("/participants/"),
-            },
-            {
-                "name": "Categories",
-                "url": "events/dashboard/categories.html",
-                "active": path.startswith("/categories/"),
-            },
-        ]
-    else:
-        for item in nav_items:
-            item["active"] = item["url"] == path
+    if (
+        path.startswith("/dashboard")
+        or path.startswith("/events/dashboard/EventDashboard")
+        or path.startswith("/participants/dashboard/ParticipantDashboard")
+        or path.startswith("/categories/dashboard/CategoryDashboard")
+    ):
 
-    return {"navbar": nav_items}
+        visible_names = {"Home", "Dashboard", "Events", "Participants", "Categories"}
+    else:
+
+        visible_names = {"Home", "About", "Contact", "Dashboard"}
+
+    filtered_nav = []
+    for item in nav_items:
+        if item["name"] in visible_names:
+
+            if item["name"] == "Dashboard":
+                active = path.startswith("/dashboard/")
+            elif item["name"] == "Events":
+                active = path.startswith("/events/dashboard/EventDashboard")
+            elif item["name"] == "Participants":
+                active = path.startswith("/participants/dashboard/ParticipantDashboard")
+            elif item["name"] == "Categories":
+                active = path.startswith("/categories/dashboard/CategoryDashboard")
+            else:
+                active = item["url"] == path
+            filtered_nav.append({**item, "active": active})
+
+    return {"navbar": filtered_nav}

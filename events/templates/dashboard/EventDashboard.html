@@ -1,11 +1,46 @@
 {% extends "base.html" %}
 {% block title %}
-    Dashboard
+    Dashboard - Events
 {% endblock title %}
 {% block theme %}
     {% block home %}
         {% include "shared/header.html" %}
-        {% include "Dashboard/stats.html" %}
-        {% include "Dashboard/allTable.html" %}
+        <div class="e-container e-my overflow-x-auto">
+            <div class="mb-8">
+                <a href="#" class="btn ">Create Event</a>
+            </div>
+            <h2 class="text-2xl font-bold mb-4 text-primary">All Events</h2>
+            <table class="min-w-full bg-white rounded-lg shadow">
+                <thead class="bg-gray-100 text-gray-700 text-sm font-semibold">
+                    <tr>
+                        <th class="px-4 py-3 text-left">#</th>
+                        <th class="px-4 py-3 text-left">Event Name</th>
+                        <th class="px-4 py-3 text-left">Date</th>
+                        <th class="px-4 py-3 text-left">Category</th>
+                        <th class="px-4 py-3 text-left">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="text-gray-800 text-sm divide-y divide-gray-200">
+                    {% for event in events %}
+                        <tr>
+                            <td class="px-4 py-3">{{ forloop.counter }}</td>
+                            <td class="px-4 py-3 font-medium">{{ event.name }}</td>
+                            <td class="px-4 py-3">{{ event.date }}</td>
+                            <td class="px-4 py-3">{{ event.category.name }}</td>
+                            <td class="px-4 py-3 space-x-8">
+                                <a href="{% url 'event_details' event.id %}"
+                                   class="text-blue-500 hover:underline">View</a>
+                                <a href="#3" class="text-yellow-500 hover:underline">Edit</a>
+                                <a href="#" class="text-red-500 hover:underline">Delete</a>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="7" class="text-center py-4 text-gray-500">No events found.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     {% endblock home %}
 {% endblock theme %}

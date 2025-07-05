@@ -12,4 +12,7 @@
   .nav_class {
     @apply hover:text-[green] tracking-wider transition duration-200;
   }
+  .btn {
+    @apply inline-block text-sm mt-4 px-6 py-3 text-white bg-primary rounded-full hover:bg-secondary uppercase transition duration-300   text-center;
+  }
 }

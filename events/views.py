@@ -1,16 +1,21 @@
 from django.shortcuts import render
 from events.models import Event, Category, Participant
 from django.utils import timezone
+from django.http import HttpResponseNotFound
+
+
+def all_events():
+    return (
+        Event.objects.select_related("category").prefetch_related("participants").all()
+    )
 
 
 def home(request):
-
+    events = all_events()
     query = request.GET.get("query", "").strip()
     category = request.GET.get("category", "").strip()
     start_date = request.GET.get("start_date", "").strip()
     end_date = request.GET.get("end_date", "").strip()
-
-    events = Event.objects.select_related("category").prefetch_related("participants")
 
     if category:
         events = events.filter(category__name=category)
@@ -36,7 +41,12 @@ def home(request):
 
 
 def event_detail(request, event_id):
-
+    events = all_events()
+    try:
+        event = events.get(id=event_id)
+    except Event.DoesNotExist:
+        return HttpResponseNotFound
+    ("Event not found")
     event = (
         Event.objects.select_related("category")
         .prefetch_related("participants")
@@ -51,11 +61,8 @@ def event_detail(request, event_id):
 
 
 def dashboard(request):
+    events = all_events()
     current_date = timezone.now().date()
-
-    events = list(
-        Event.objects.select_related("category").prefetch_related("participants")
-    )
 
     context = {
         "events": events,
@@ -68,17 +75,9 @@ def dashboard(request):
 
 
 def event(request):
-    current_date = timezone.now().date()
-
-    events = list(
-        Event.objects.select_related("category").prefetch_related("participants")
-    )
-
+    events = all_events()
     context = {
         "events": events,
-        "participants_count": Participant.objects.count(),
-        "upcoming_events": Event.objects.filter(date__gte=current_date),
-        "past_events": Event.objects.filter(date__lt=current_date),
     }
 
     return render(request, "dashboard/EventDashboard.html", context)
