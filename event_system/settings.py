@@ -47,9 +47,6 @@ INSTALLED_APPS = [
     "django_extensions",
 ]
 
-if DEBUG:
-    INSTALLED_APPS += ["debug_toolbar"]
-
 
 INTERNAL_IPS = [
     # ...
@@ -77,8 +74,10 @@ MIDDLEWARE = [
     "django_browser_reload.middleware.BrowserReloadMiddleware",
 ]
 
-if DEBUG:
-    MIDDLEWARE += ["debug_toolbar.middleware.DebugToolbarMiddleware"]
+# if DEBUG:
+#     INSTALLED_APPS += ["debug_toolbar"]
+#     MIDDLEWARE += ["debug_toolbar.middleware.DebugToolbarMiddleware"]
+
 
 ROOT_URLCONF = "event_system.urls"
 
