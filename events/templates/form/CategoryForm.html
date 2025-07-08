@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}
+    {% if is_update %}
+        Update Category
+    {% else %}
+        Create Category
+    {% endif %}
+{% endblock title %}
+{% block theme %}
+    {% include "shared/header.html" %}
+    <div class="max-w-[700px] mx-auto e-my">
+        <h1 class="text-2xl font-bold mb-4 text-primary">
+            {% if is_update %}
+                Update Category
+            {% else %}
+                Create Category
+            {% endif %}
+        </h1>
+        <form method="post" class="max-w-lg">
+            {% csrf_token %}
+            <div class="mb-4">
+                <label for="{{ form.name.id_for_label }}" class="form-field-label">{{ form.name.label }}</label>
+                {{ form.name }}
+            </div>
+            <div class="mb-6">
+                <label for="{{ form.description.id_for_label }}" class="form-field-label">{{ form.description.label }}</label>
+                {{ form.description }}
+            </div>
+            <button type="submit" class="btn">
+                {% if is_update %}
+                    Update Category
+                {% else %}
+                    Create Category
+                {% endif %}
+            </button>
+        </form>
+    </div>
+    {% include "shared/footer.html" %}
+{% endblock theme %}

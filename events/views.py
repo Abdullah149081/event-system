@@ -1,7 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from events.models import Event, Category, Participant
 from django.utils import timezone
 from django.http import HttpResponseNotFound
+from events.forms import EventForm, ParticipantForm, CategoryForm
 
 
 def all_events():
@@ -91,9 +92,141 @@ def participant_dashboard(request):
 
 
 def category_dashboard(request):
-    categories = Category.objects.all()
+    categories = Category.objects.prefetch_related("events").all()
     context = {
         "categories": categories,
     }
 
     return render(request, "dashboard/CategoryDashboard.html", context)
+
+
+def create_event(request):
+    if request.method == "POST":
+        form = EventForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("event")
+    else:
+        form = EventForm()
+
+    return render(request, "form/EventsForm.html", {"form": form, "is_update": False})
+
+
+def update_event(request, event_id):
+    try:
+        event = Event.objects.get(id=event_id)
+    except Event.DoesNotExist:
+        return HttpResponseNotFound("Event not found")
+
+    if request.method == "POST":
+        form = EventForm(request.POST, instance=event)
+        if form.is_valid():
+            form.save()
+            return redirect("event")
+    else:
+        form = EventForm(instance=event)
+
+    return render(request, "form/EventsForm.html", {"form": form, "is_update": True})
+
+
+def delete_event(request, event_id):
+    try:
+        event = Event.objects.get(id=event_id)
+    except Event.DoesNotExist:
+        return HttpResponseNotFound("Event not found")
+
+    if request.method == "POST":
+        event.delete()
+        return redirect("event")
+
+    return render(request, "dashboard/EventDashboard.html", {"event": event})
+
+
+def create_participant(request):
+    if request.method == "POST":
+        form = ParticipantForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("participant_dashboard")
+    else:
+        form = ParticipantForm()
+
+    return render(
+        request, "form/ParticipantForm.html", {"form": form, "is_update": False}
+    )
+
+
+def update_participant(request, participant_id):
+    try:
+        participant = Participant.objects.get(id=participant_id)
+    except Participant.DoesNotExist:
+        return HttpResponseNotFound("Participant not found")
+
+    if request.method == "POST":
+        form = ParticipantForm(request.POST, instance=participant)
+        if form.is_valid():
+            form.save()
+            return redirect("participant_dashboard")
+    else:
+        form = ParticipantForm(instance=participant)
+
+    return render(
+        request, "form/ParticipantForm.html", {"form": form, "is_update": True}
+    )
+
+
+def delete_participant(request, participant_id):
+    try:
+        participant = Participant.objects.get(id=participant_id)
+    except Participant.DoesNotExist:
+        return HttpResponseNotFound("Participant not found")
+
+    if request.method == "POST":
+        participant.delete()
+        return redirect("participant_dashboard")
+
+    return render(
+        request, "dashboard/ParticipantDashboard.html", {"participant": participant}
+    )
+
+
+def create_category(request):
+    if request.method == "POST":
+        form = CategoryForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("category_dashboard")
+    else:
+        form = CategoryForm()
+
+    return render(request, "form/CategoryForm.html", {"form": form, "is_update": False})
+
+
+def update_category(request, category_id):
+    try:
+        category = Category.objects.get(id=category_id)
+    except Category.DoesNotExist:
+        return HttpResponseNotFound("Category not found")
+
+    if request.method == "POST":
+        form = CategoryForm(request.POST, instance=category)
+        if form.is_valid():
+            form.save()
+            return redirect("category_dashboard")
+    else:
+        form = CategoryForm(instance=category)
+
+    return render(request, "form/CategoryForm.html", {"form": form, "is_update": True})
+
+
+def delete_category(request, category_id):
+    try:
+        category = Category.objects.get(id=category_id)
+    except Category.DoesNotExist:
+        return HttpResponseNotFound("Category not found")
+
+    if request.method == "POST":
+        category.delete()
+        return redirect("category_dashboard")
+
+    return render(request, "dashboard/CategoryDashboard.html", {"category": category})

@@ -4,37 +4,48 @@
 {% endblock title %}
 {% block theme %}
     {% include "shared/header.html" %}
-    <div class="e-container e-my overflow-x-auto">
+    <div class="e-container e-my">
         <div class="mb-8">
-            <a href="#" class="btn ">Create Participant</a>
+            <a href="{% url 'create_participant' %}" class="btn ">Create Participant</a>
         </div>
         <h2 class="text-2xl font-bold mb-4 text-primary">All Participants</h2>
-        <table class="min-w-full bg-white rounded-lg shadow">
-            <thead class="bg-gray-100 text-gray-700 text-sm font-semibold">
-                <tr>
-                    <th class="px-4 py-3 text-left">#</th>
-                    <th class="px-4 py-3 text-left">Participant Name</th>
-                    <th class="px-4 py-3 text-left">Description</th>
-                    <th class="px-4 py-3 text-left">Actions</th>
-                </tr>
-            </thead>
-            <tbody class="text-gray-800 text-sm divide-y divide-gray-200">
-                {% for participant in participants %}
+        <div class="overflow-x-auto overflow-y-auto max-h-[500px] border border-gray-200 rounded-lg">
+            <table class="min-w-full bg-white shadow ">
+                <thead class="bg-gray-100 text-gray-700 text-sm font-semibold sticky top-0">
                     <tr>
-                        <td class="px-4 py-3">{{ forloop.counter }}</td>
-                        <td class="px-4 py-3 font-medium">{{ participant.name }}</td>
-                        <td class="px-4 py-3">{{ participant.email }}</td>
-                        <td class="px-4 py-3 space-x-8">
-                            <a href="#3" class="text-yellow-500 hover:underline">Edit</a>
-                            <a href="#" class="text-red-500 hover:underline">Delete</a>
-                        </td>
+                        <th class="px-4 py-3 text-left">#</th>
+                        <th class="px-4 py-3 text-left">Participant Name</th>
+                        <th class="px-4 py-3 text-left">Email</th>
+                        <th class="px-4 py-3 text-left">Actions</th>
                     </tr>
-                {% empty %}
-                    <tr>
-                        <td colspan="7" class="text-center py-4 text-gray-500">No events found.</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody class="text-gray-800 text-sm divide-y divide-gray-200">
+                    {% for participant in participants %}
+                        <tr>
+                            <td class="px-4 py-3">{{ forloop.counter }}</td>
+                            <td class="px-4 py-3 font-medium">{{ participant.name }}</td>
+                            <td class="px-4 py-3">{{ participant.email }}</td>
+                            <td class="px-4 py-3 space-x-8">
+                                <a href="{% url 'update_participant' participant.id %}"
+                                   class="text-yellow-500 hover:underline">Edit</a>
+                                <form method="post"
+                                      action="{% url 'delete_participant' participant.id %}"
+                                      class="inline">
+                                    {% csrf_token %}
+                                    <button type="submit"
+                                            class="text-red-500 hover:underline bg-transparent border-none cursor-pointer p-0">
+                                        Delete
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="4" class="text-center py-4 text-gray-500">No participants found.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 {% endblock theme %}

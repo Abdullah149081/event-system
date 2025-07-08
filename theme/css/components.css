@@ -15,4 +15,20 @@
   .btn {
     @apply inline-block text-sm mt-4 px-6 py-3 text-white bg-primary rounded-full hover:bg-secondary uppercase transition duration-300   text-center;
   }
+
+  .form-checkbox-group {
+    @apply space-y-3 p-4 bg-gray-50 border border-gray-200 rounded-lg;
+  }
+
+  .form-checkbox-group input[type="checkbox"] {
+    @apply w-4 h-4 text-primary bg-gray-100 border-gray-300 rounded focus:ring-primary focus:ring-2 mr-3;
+  }
+
+  .form-checkbox-group label {
+    @apply flex items-center text-sm font-medium text-gray-700 cursor-pointer hover:text-primary transition-colors duration-200;
+  }
+
+  .form-field-label {
+    @apply block text-sm font-medium text-gray-700 mb-2;
+  }
 }
