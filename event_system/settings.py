@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,7 +25,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-5fah^1l%xe-&^6=gg)cp-icanck5ztbdsvevt+++$rf0x(x@77"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get("DEBUG", "True") == "True"
+
 
 ALLOWED_HOSTS = []
 
@@ -42,8 +45,11 @@ INSTALLED_APPS = [
     "theme",
     "django_browser_reload",
     "django_extensions",
-    "debug_toolbar",
 ]
+
+if DEBUG:
+    INSTALLED_APPS += ["debug_toolbar"]
+
 
 INTERNAL_IPS = [
     # ...
@@ -69,8 +75,10 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django_browser_reload.middleware.BrowserReloadMiddleware",
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
+
+if DEBUG:
+    MIDDLEWARE += ["debug_toolbar.middleware.DebugToolbarMiddleware"]
 
 ROOT_URLCONF = "event_system.urls"
 
