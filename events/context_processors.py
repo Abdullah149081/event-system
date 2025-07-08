@@ -7,15 +7,15 @@ def navbar_context(request):
         {"name": "Contact", "url": "/contact/"},
         {"name": "Dashboard", "url": "/dashboard/"},
         {"name": "Events", "url": "/events/dashboard/EventDashboard"},
-        {"name": "Participants", "url": "/participants/dashboard/ParticipantDashboard"},
-        {"name": "Categories", "url": "/categories/dashboard/CategoryDashboard"},
+        {"name": "Participants", "url": "/events/dashboard/ParticipantDashboard"},
+        {"name": "Categories", "url": "/events/dashboard/CategoryDashboard"},
     ]
 
     if (
         path.startswith("/dashboard")
         or path.startswith("/events/dashboard/EventDashboard")
-        or path.startswith("/participants/dashboard/ParticipantDashboard")
-        or path.startswith("/categories/dashboard/CategoryDashboard")
+        or path.startswith("/events/dashboard/ParticipantDashboard")
+        or path.startswith("/events/dashboard/CategoryDashboard")
     ):
 
         visible_names = {"Home", "Dashboard", "Events", "Participants", "Categories"}
@@ -32,9 +32,9 @@ def navbar_context(request):
             elif item["name"] == "Events":
                 active = path.startswith("/events/dashboard/EventDashboard")
             elif item["name"] == "Participants":
-                active = path.startswith("/participants/dashboard/ParticipantDashboard")
+                active = path.startswith("/events/dashboard/ParticipantDashboard")
             elif item["name"] == "Categories":
-                active = path.startswith("/categories/dashboard/CategoryDashboard")
+                active = path.startswith("/events/dashboard/CategoryDashboard")
             else:
                 active = item["url"] == path
             filtered_nav.append({**item, "active": active})

@@ -79,3 +79,21 @@ def event(request):
     }
 
     return render(request, "dashboard/EventDashboard.html", context)
+
+
+def participant_dashboard(request):
+    participants = Participant.objects.all()
+    context = {
+        "participants": participants,
+    }
+
+    return render(request, "dashboard/ParticipantDashboard.html", context)
+
+
+def category_dashboard(request):
+    categories = Category.objects.all()
+    context = {
+        "categories": categories,
+    }
+
+    return render(request, "dashboard/CategoryDashboard.html", context)
