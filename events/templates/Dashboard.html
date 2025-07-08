@@ -3,9 +3,7 @@
     Dashboard
 {% endblock title %}
 {% block theme %}
-    {% block home %}
-        {% include "shared/header.html" %}
-        {% include "Dashboard/stats.html" %}
-        {% include "Dashboard/allTable.html" %}
-    {% endblock home %}
+    {% include "shared/header.html" %}
+    {% include "Dashboard/stats.html" %}
+    {% include "Dashboard/allTable.html" %}
 {% endblock theme %}

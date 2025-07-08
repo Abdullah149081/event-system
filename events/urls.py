@@ -15,7 +15,6 @@ from events.views import (
     update_category,
     delete_category,
 )
-from debug_toolbar.toolbar import debug_toolbar_urls
 
 
 urlpatterns = [
@@ -53,4 +52,4 @@ urlpatterns = [
         delete_category,
         name="delete_category",
     ),
-] + debug_toolbar_urls()  # Include Debug Toolbar URLs if installed
+]

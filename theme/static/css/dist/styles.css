@@ -334,24 +334,6 @@
   .max-h-0 {
     max-height: calc(var(--spacing) * 0);
   }
-  .max-h-9 {
-    max-height: calc(var(--spacing) * 9);
-  }
-  .max-h-96 {
-    max-height: calc(var(--spacing) * 96);
-  }
-  .max-h-\[5\] {
-    max-height: 5;
-  }
-  .max-h-\[50\] {
-    max-height: 50;
-  }
-  .max-h-\[500\] {
-    max-height: 500;
-  }
-  .max-h-\[500p\] {
-    max-height: 500p;
-  }
   .max-h-\[500px\] {
     max-height: 500px;
   }

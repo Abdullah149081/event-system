@@ -18,6 +18,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from events.views import home, dashboard
+from debug_toolbar.urls import debug_toolbar_urls
 
 
 urlpatterns = [
@@ -26,4 +27,4 @@ urlpatterns = [
     path("", home, name="home"),
     path("dashboard/", dashboard, name="dashboard"),
     path("__reload__/", include("django_browser_reload.urls")),
-]
+] + debug_toolbar_urls()
