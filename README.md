@@ -1,4 +1,4 @@
-# EventEase - Django Event Management System 🎉
+# EventSys - Django Event Management System 🎉
 
 A powerful and responsive event management platform built with **Django**, **Tailwind CSS**, and **SQLite/PostgreSQL**. Organizers can create, manage, and track events and participants with ease.
 
@@ -250,7 +250,7 @@ coverage report
 
 - 🌐 **Portfolio:** [abdullah-149081.netlify.app](https://abdullah-149081.netlify.app)
 - 💻 **GitHub:** [@Abdullah149081](https://github.com/Abdullah149081)
-- 📧 **Email:** abdullah149081@gmail.com
+- 📧 **Email:** abdullah149081@hotmail.com
 - 💼 **LinkedIn:** [Connect with me](https://linkedin.com/in/abdullah149081)
 
 ---
