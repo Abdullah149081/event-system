@@ -1,13 +1,16 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from users.form import RegisterForm
+from users.forms import RegisterForm
 from django.contrib.auth.models import User
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse
 from django.utils.http import urlsafe_base64_decode
 from django.utils.encoding import force_str
-from users.form import LoginForm
+from users.forms import LoginForm
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.db.models import Prefetch
+
 
 def sign_up(request):
     if request.method == "POST":
@@ -19,8 +22,8 @@ def sign_up(request):
             else:
                 user = form.save(commit=False)
                 user.set_password(form.cleaned_data.get("password1"))
-                user.is_active = False  # Set user as inactive until email confirmation
-                user.save()  # This will trigger the post_save signal to send email
+                user.is_active = False
+                user.save()
 
                 messages.success(
                     request,
@@ -37,24 +40,24 @@ def sign_up(request):
 
 def sign_in(request):
     if request.method == "POST":
-        username = request.POST.get("username")
-        password = request.POST.get("password")
-
-        user = authenticate(request, username=username, password=password)
-
-        if user:
+        form = LoginForm(request, data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
             if user.is_active:
                 login(request, user)
                 messages.success(request, "Welcome back!")
                 return redirect("/")
-            messages.error(
-                request,
-                "Your account is not activated. Please check your email for the activation link.",
-            )
+            else:
+                messages.error(
+                    request,
+                    "Your account is not activated. Please check your email for the activation link.",
+                )
         else:
             messages.error(request, "Invalid username or password.")
+    else:
+        form = LoginForm()
 
-    return render(request, "auth/login.html")
+    return render(request, "auth/login.html", {"form": form})
 
 
 def activate_user(request, uidb64, token):
@@ -77,6 +80,7 @@ def activate_user(request, uidb64, token):
     return redirect("sign_in")
 
 
+@login_required
 def sign_out(request):
     logout(request)
     messages.success(request, "You have been logged out.")

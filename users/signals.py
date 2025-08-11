@@ -15,11 +15,9 @@ def send_activation_email(sender, instance, created, **kwargs):
     """
     if created and not instance.is_active:
         try:
-            # Generate activation token
             token = default_token_generator.make_token(instance)
             uid = urlsafe_base64_encode(force_bytes(instance.pk))
 
-            # Create activation URL
             activation_url = f"{settings.FRONTEND_URL}/users/activate/{uid}/{token}/"
 
             subject = "Activate Your Account - Event Management"
@@ -51,4 +49,3 @@ The Event Management Team
 
         except Exception as e:
             print(f"Failed to send activation email to {instance.email}: {str(e)}")
-            # You could also log this to a file or send to a monitoring service

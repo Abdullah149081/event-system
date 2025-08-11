@@ -6,7 +6,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from events.forms import TailwindMixin
 
 
-class RegisterForm(UserCreationForm):
+class RegisterForm(TailwindMixin, UserCreationForm):
     class Meta:
         model = User
         fields = [
@@ -17,19 +17,18 @@ class RegisterForm(UserCreationForm):
             "password1",
             "password2",
         ]
+        widgets = {
+            "username": forms.TextInput(attrs={"placeholder": "Username"}),
+            "first_name": forms.TextInput(attrs={"placeholder": "First Name"}),
+            "last_name": forms.TextInput(attrs={"placeholder": "Last Name"}),
+            "email": forms.EmailInput(attrs={"placeholder": "Email"}),
+            "password1": forms.PasswordInput(attrs={"placeholder": "Password"}),
+            "password2": forms.PasswordInput(attrs={"placeholder": "Confirm Password"}),
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        # Apply styling to all fields
-        for field_name, field in self.fields.items():
-            field.widget.attrs.update(
-                {
-                    "class": "w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-300"
-                }
-            )
-
-        # Remove help text for specific fields
         for fieldname in [
             "username",
             "password1",
@@ -41,3 +40,5 @@ class RegisterForm(UserCreationForm):
 class LoginForm(TailwindMixin, AuthenticationForm):
     def __init__(self, *arg, **kwargs):
         super().__init__(*arg, **kwargs)
+        self.fields["username"].widget.attrs.update({"placeholder": "Username"})
+        self.fields["password"].widget.attrs.update({"placeholder": "Password"})
