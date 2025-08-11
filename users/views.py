@@ -1,15 +1,12 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from users.forms import RegisterForm
+from users.forms import RegisterForm, LoginForm
 from django.contrib.auth.models import User
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse
 from django.utils.http import urlsafe_base64_decode
 from django.utils.encoding import force_str
-from users.forms import LoginForm
-from django.contrib.auth.decorators import login_required, user_passes_test
-from django.db.models import Prefetch
 
 
 def sign_up(request):
@@ -80,7 +77,6 @@ def activate_user(request, uidb64, token):
     return redirect("sign_in")
 
 
-@login_required
 def sign_out(request):
     logout(request)
     messages.success(request, "You have been logged out.")
