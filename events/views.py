@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.shortcuts import render, redirect
 from events.models import Event, Category, Participant
 from django.utils import timezone
@@ -49,7 +50,8 @@ def event_detail(request, event_id):
             .get(id=event_id)
         )
     except Event.DoesNotExist:
-        return HttpResponseNotFound("Event not found")
+        messages.error(request, "Event not found.")
+        return redirect("home")
 
     context = {
         "event": event,
@@ -104,8 +106,13 @@ def create_event(request):
     if request.method == "POST":
         form = EventForm(request.POST)
         if form.is_valid():
-            form.save()
+            event = form.save()
+            messages.success(
+                request, f"Event '{event.name}' has been created successfully!"
+            )
             return redirect("event")
+        else:
+            messages.error(request, "Please correct the errors below.")
     else:
         form = EventForm()
 
@@ -116,13 +123,19 @@ def update_event(request, event_id):
     try:
         event = Event.objects.get(id=event_id)
     except Event.DoesNotExist:
-        return HttpResponseNotFound("Event not found")
+        messages.error(request, "Event not found.")
+        return redirect("event")
 
     if request.method == "POST":
         form = EventForm(request.POST, instance=event)
         if form.is_valid():
-            form.save()
+            updated_event = form.save()
+            messages.success(
+                request, f"Event '{updated_event.name}' has been updated successfully!"
+            )
             return redirect("event")
+        else:
+            messages.error(request, "Please correct the errors below.")
     else:
         form = EventForm(instance=event)
 
@@ -133,10 +146,15 @@ def delete_event(request, event_id):
     try:
         event = Event.objects.get(id=event_id)
     except Event.DoesNotExist:
-        return HttpResponseNotFound("Event not found")
+        messages.error(request, "Event not found.")
+        return redirect("event")
 
     if request.method == "POST":
+        event_name = event.name
         event.delete()
+        messages.success(
+            request, f"Event '{event_name}' has been deleted successfully!"
+        )
         return redirect("event")
 
     return render(request, "dashboard/EventDashboard.html", {"event": event})
@@ -146,8 +164,14 @@ def create_participant(request):
     if request.method == "POST":
         form = ParticipantForm(request.POST)
         if form.is_valid():
-            form.save()
+            participant = form.save()
+            messages.success(
+                request,
+                f"Participant '{participant.name}' has been created successfully!",
+            )
             return redirect("participant_dashboard")
+        else:
+            messages.error(request, "Please correct the errors below.")
     else:
         form = ParticipantForm()
 
@@ -160,13 +184,20 @@ def update_participant(request, participant_id):
     try:
         participant = Participant.objects.get(id=participant_id)
     except Participant.DoesNotExist:
-        return HttpResponseNotFound("Participant not found")
+        messages.error(request, "Participant not found.")
+        return redirect("participant_dashboard")
 
     if request.method == "POST":
         form = ParticipantForm(request.POST, instance=participant)
         if form.is_valid():
-            form.save()
+            updated_participant = form.save()
+            messages.success(
+                request,
+                f"Participant '{updated_participant.name}' has been updated successfully!",
+            )
             return redirect("participant_dashboard")
+        else:
+            messages.error(request, "Please correct the errors below.")
     else:
         form = ParticipantForm(instance=participant)
 
@@ -179,10 +210,15 @@ def delete_participant(request, participant_id):
     try:
         participant = Participant.objects.get(id=participant_id)
     except Participant.DoesNotExist:
-        return HttpResponseNotFound("Participant not found")
+        messages.error(request, "Participant not found.")
+        return redirect("participant_dashboard")
 
     if request.method == "POST":
+        participant_name = participant.name
         participant.delete()
+        messages.success(
+            request, f"Participant '{participant_name}' has been deleted successfully!"
+        )
         return redirect("participant_dashboard")
 
     return render(
@@ -194,8 +230,13 @@ def create_category(request):
     if request.method == "POST":
         form = CategoryForm(request.POST)
         if form.is_valid():
-            form.save()
+            category = form.save()
+            messages.success(
+                request, f"Category '{category.name}' has been created successfully!"
+            )
             return redirect("category_dashboard")
+        else:
+            messages.error(request, "Please correct the errors below.")
     else:
         form = CategoryForm()
 
@@ -206,13 +247,20 @@ def update_category(request, category_id):
     try:
         category = Category.objects.get(id=category_id)
     except Category.DoesNotExist:
-        return HttpResponseNotFound("Category not found")
+        messages.error(request, "Category not found.")
+        return redirect("category_dashboard")
 
     if request.method == "POST":
         form = CategoryForm(request.POST, instance=category)
         if form.is_valid():
-            form.save()
+            updated_category = form.save()
+            messages.success(
+                request,
+                f"Category '{updated_category.name}' has been updated successfully!",
+            )
             return redirect("category_dashboard")
+        else:
+            messages.error(request, "Please correct the errors below.")
     else:
         form = CategoryForm(instance=category)
 
@@ -223,10 +271,15 @@ def delete_category(request, category_id):
     try:
         category = Category.objects.get(id=category_id)
     except Category.DoesNotExist:
-        return HttpResponseNotFound("Category not found")
+        messages.error(request, "Category not found.")
+        return redirect("category_dashboard")
 
     if request.method == "POST":
+        category_name = category.name
         category.delete()
+        messages.success(
+            request, f"Category '{category_name}' has been deleted successfully!"
+        )
         return redirect("category_dashboard")
 
     return render(request, "dashboard/CategoryDashboard.html", {"category": category})
