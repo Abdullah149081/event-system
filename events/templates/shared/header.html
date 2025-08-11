@@ -22,6 +22,15 @@
                         </a>
                     </li>
                 {% endfor %}
+                {% if request.user.is_authenticated %}
+                    <li>
+                        <a href="{% url 'sign_out' %}">
+                            <button class="bg-red-600 text-white cursor-pointer rounded-full hover:bg-red-700  font-medium py-2 px-4  transition duration-200">
+                                Sign Out
+                            </button>
+                        </a>
+                    </li>
+                {% endif %}
             </ul>
         </nav>
     </header>
