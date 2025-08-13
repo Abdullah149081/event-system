@@ -28,10 +28,12 @@ MarkupSafe==3.0.2
 mdurl==0.1.2
 parso==0.8.4
 pathspec==0.12.1
+pillow==11.3.0
 prompt_toolkit==3.0.51
 ptpython==3.0.30
 Pygments==2.19.2
 python-dateutil==2.9.0.post0
+python-decouple==3.8
 python-slugify==8.0.4
 PyYAML==6.0.2
 regex==2024.11.6

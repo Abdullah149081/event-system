@@ -1,5 +1,5 @@
 from django import forms
-from events.models import Event, Category, Participant
+from events.models import Event, Category
 
 
 class TailwindMixin:
@@ -42,24 +42,48 @@ class TailwindMixin:
 class EventForm(TailwindMixin, forms.ModelForm):
     class Meta:
         model = Event
-        fields = ["name", "description", "date", "time", "location", "category"]
+        fields = [
+            "name",
+            "description",
+            "date",
+            "time",
+            "location",
+            "category",
+            "image",
+        ]
         widgets = {
             "date": forms.DateInput(attrs={"type": "date"}),
             "time": forms.TimeInput(attrs={"type": "time"}),
+            "image": forms.FileInput(
+                attrs={
+                    "accept": "image/*",
+                    "class": "block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100",
+                }
+            ),
         }
+        help_texts = {
+            "image": "Upload an image for your event. Images will be automatically optimized to WebP format for better performance.",
+        }
+
+    def clean_image(self):
+        image = self.cleaned_data.get("image")
+        if image:
+
+            if image.size > 10 * 1024 * 1024:
+                raise forms.ValidationError("Image file too large ( > 10MB )")
+
+            try:
+                from PIL import Image as PILImage
+
+                PILImage.open(image)
+                image.seek(0)
+            except Exception:
+                raise forms.ValidationError("Invalid image file")
+
+        return image
 
 
 class CategoryForm(TailwindMixin, forms.ModelForm):
     class Meta:
         model = Category
         fields = ["name", "description"]
-
-
-class ParticipantForm(TailwindMixin, forms.ModelForm):
-    class Meta:
-        model = Participant
-        fields = ["name", "email", "events"]
-        widgets = {
-            "email": forms.EmailInput(attrs={"type": "email"}),
-            "events": forms.CheckboxSelectMultiple(),
-        }

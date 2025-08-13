@@ -1,51 +1,328 @@
 {% extends "base.html" %}
 {% block title %}
-    Dashboard - Participant Dashboard
+    Participant Dashboard
 {% endblock title %}
 {% block theme %}
     {% include "shared/header.html" %}
-    <div class="e-container e-my">
-        <div class="mb-8">
-            <a href="{% url 'create_participant' %}" class="btn ">Create Participant</a>
-        </div>
-        <h2 class="text-2xl font-bold mb-4 text-primary">All Participants</h2>
-        <div class="overflow-x-auto overflow-y-auto max-h-[500px] border border-gray-200 rounded-lg">
-            <table class="min-w-full bg-white shadow ">
-                <thead class="bg-gray-100 text-gray-700 text-sm font-semibold sticky top-0">
-                    <tr>
-                        <th class="px-4 py-3 text-left">#</th>
-                        <th class="px-4 py-3 text-left">Participant Name</th>
-                        <th class="px-4 py-3 text-left">Email</th>
-                        <th class="px-4 py-3 text-left">Actions</th>
-                    </tr>
-                </thead>
-                <tbody class="text-gray-800 text-sm divide-y divide-gray-200">
-                    {% for participant in participants %}
-                        <tr>
-                            <td class="px-4 py-3">{{ forloop.counter }}</td>
-                            <td class="px-4 py-3 font-medium">{{ participant.name }}</td>
-                            <td class="px-4 py-3">{{ participant.email }}</td>
-                            <td class="px-4 py-3 space-x-8">
-                                <a href="{% url 'update_participant' participant.id %}"
-                                   class="text-yellow-500 hover:underline">Edit</a>
-                                <form method="post"
-                                      action="{% url 'delete_participant' participant.id %}"
-                                      class="inline">
-                                    {% csrf_token %}
-                                    <button type="submit"
-                                            class="text-red-500 hover:underline bg-transparent border-none cursor-pointer p-0">
-                                        Delete
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                    {% empty %}
-                        <tr>
-                            <td colspan="4" class="text-center py-4 text-gray-500">No participants found.</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+    <!-- Participant Dashboard Header -->
+    <div class="bg-gradient-to-r from-purple-600 to-indigo-600 text-white py-12">
+        <div class="e-container">
+            <div class="flex items-center gap-4">
+                <div class="bg-white/20 w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg">
+                    <i class="fas fa-user text-2xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-3xl font-bold">My Events Dashboard</h1>
+                    <p class="text-purple-100 mt-1">Track your RSVPs and discover new events</p>
+                </div>
+            </div>
         </div>
     </div>
+    <!-- Participant Stats -->
+    <div class="e-container e-my">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <!-- My RSVPs -->
+            <div class="group relative bg-white shadow-lg rounded-2xl p-6 text-center border border-gray-100 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-t-2xl"></div>
+                <div class="bg-gradient-to-r from-purple-500 to-indigo-500 w-16 h-16 rounded-full mx-auto mb-4 flex items-center justify-center text-white shadow-lg">
+                    <i class="fas fa-calendar-check text-2xl"></i>
+                </div>
+                <h2 class="text-3xl font-bold text-gray-800 mb-2">{{ user_rsvps|length }}</h2>
+                <p class="text-sm text-gray-600 font-medium">My RSVPs</p>
+                <div class="absolute inset-0 bg-gradient-to-r from-purple-500/5 to-indigo-500/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                </div>
+            </div>
+            <!-- Upcoming Events -->
+            <div class="group relative bg-white shadow-lg rounded-2xl p-6 text-center border border-gray-100 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-green-500 to-emerald-500 rounded-t-2xl"></div>
+                <div class="bg-gradient-to-r from-green-500 to-emerald-500 w-16 h-16 rounded-full mx-auto mb-4 flex items-center justify-center text-white shadow-lg">
+                    <i class="fas fa-clock text-2xl"></i>
+                </div>
+                <h2 class="text-3xl font-bold text-gray-800 mb-2">{{ upcoming_events|length }}</h2>
+                <p class="text-sm text-gray-600 font-medium">Upcoming Events</p>
+                <div class="absolute inset-0 bg-gradient-to-r from-green-500/5 to-emerald-500/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                </div>
+            </div>
+            <!-- Events Attended -->
+            <div class="group relative bg-white shadow-lg rounded-2xl p-6 text-center border border-gray-100 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-t-2xl"></div>
+                <div class="bg-gradient-to-r from-blue-500 to-cyan-500 w-16 h-16 rounded-full mx-auto mb-4 flex items-center justify-center text-white shadow-lg">
+                    <i class="fas fa-trophy text-2xl"></i>
+                </div>
+                <h2 class="text-3xl font-bold text-gray-800 mb-2">{{ past_events|length }}</h2>
+                <p class="text-sm text-gray-600 font-medium">Events Attended</p>
+                <div class="absolute inset-0 bg-gradient-to-r from-blue-500/5 to-cyan-500/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                </div>
+            </div>
+            <!-- Available Events -->
+            <div class="group relative bg-white shadow-lg rounded-2xl p-6 text-center border border-gray-100 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-orange-500 to-red-500 rounded-t-2xl"></div>
+                <div class="bg-gradient-to-r from-orange-500 to-red-500 w-16 h-16 rounded-full mx-auto mb-4 flex items-center justify-center text-white shadow-lg">
+                    <i class="fas fa-search text-2xl"></i>
+                </div>
+                <h2 class="text-3xl font-bold text-gray-800 mb-2">{{ available_events|length }}</h2>
+                <p class="text-sm text-gray-600 font-medium">Available Events</p>
+                <div class="absolute inset-0 bg-gradient-to-r from-orange-500/5 to-red-500/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                </div>
+            </div>
+        </div>
+        <!-- Quick Actions & Today's Events -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+            <!-- Quick Actions -->
+            <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="bg-gradient-to-r from-purple-600 to-indigo-600 w-12 h-12 rounded-full flex items-center justify-center text-white shadow-lg">
+                        <i class="fas fa-rocket text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800">Quick Actions</h3>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <a href="{% url 'home' %}"
+                       class="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white p-4 rounded-xl transition-all duration-200 transform hover:scale-105 text-center">
+                        <i class="fas fa-calendar-alt text-2xl mb-2"></i>
+                        <p class="font-medium">Browse Events</p>
+                    </a>
+                    <a href="{% url 'home' %}?filter=upcoming"
+                       class="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white p-4 rounded-xl transition-all duration-200 transform hover:scale-105 text-center">
+                        <i class="fas fa-search text-2xl mb-2"></i>
+                        <p class="font-medium">Find Events</p>
+                    </a>
+                </div>
+                <div class="mt-4 p-4 bg-gradient-to-r from-purple-50 to-indigo-50 rounded-xl border border-purple-100">
+                    <h4 class="font-semibold text-purple-700 mb-2">Your Activity</h4>
+                    <p class="text-sm text-purple-600">
+                        You're attending {{ upcoming_events|length }} upcoming event{{ upcoming_events|length|pluralize }}
+                    </p>
+                </div>
+            </div>
+            <!-- Today's Events -->
+            <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="bg-gradient-to-r from-orange-500 to-red-500 w-12 h-12 rounded-full flex items-center justify-center text-white shadow-lg">
+                        <i class="fas fa-calendar-day text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800">Today's Events</h3>
+                </div>
+                {% if today_events %}
+                    <div class="space-y-3">
+                        {% for event in today_events %}
+                            <div class="bg-gradient-to-r from-gray-50 to-white p-4 rounded-xl border border-gray-200">
+                                <h4 class="font-bold text-gray-800">{{ event.name }}</h4>
+                                <div class="flex items-center gap-4 text-sm text-gray-600 mt-1">
+                                    <span class="flex items-center gap-1">
+                                        <i class="fas fa-clock text-orange-500"></i>
+                                        {{ event.time|time:"h:i A" }}
+                                    </span>
+                                    <span class="flex items-center gap-1">
+                                        <i class="fas fa-map-marker-alt text-red-500"></i>
+                                        {{ event.location|truncatechars:20 }}
+                                    </span>
+                                </div>
+                                <div class="mt-2 flex items-center justify-between">
+                                    {% if user in event.participants.all %}
+                                        <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-medium">
+                                            <i class="fas fa-check mr-1"></i>RSVP'd
+                                        </span>
+                                        <form method="post" action="{% url 'cancel_rsvp' event.id %}" class="ml-2">
+                                            {% csrf_token %}
+                                            <button type="submit"
+                                                    class="bg-red-500 hover:bg-red-600 text-white py-1 px-2 rounded text-xs font-medium transition-colors duration-200"
+                                                    onclick="return confirm('Are you sure you want to cancel your RSVP?')">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        </form>
+                                    {% else %}
+                                        <a href="{% url 'event_details' event.id %}"
+                                           class="text-blue-600 hover:text-blue-800 text-xs font-medium">View Details</a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="text-center py-8">
+                        <i class="fas fa-calendar-times text-4xl text-gray-300 mb-3"></i>
+                        <p class="text-gray-500">No events scheduled for today</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <!-- My RSVPs -->
+    <div class="e-container e-my">
+        <div class="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+            <!-- Header -->
+            <div class="bg-gradient-to-r from-purple-600 to-indigo-600 p-6">
+                <div class="flex items-center gap-3">
+                    <div class="bg-white/20 w-12 h-12 rounded-full flex items-center justify-center text-white shadow-lg">
+                        <i class="fas fa-calendar-check text-xl"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold text-white">My RSVP'd Events</h2>
+                </div>
+            </div>
+            <!-- Events Grid -->
+            {% if user_rsvps %}
+                <div class="p-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {% for event in user_rsvps %}
+                            <div class="group bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                                <!-- Event Image -->
+                                <div class="relative h-48 bg-gradient-to-r from-purple-400 to-indigo-500 overflow-hidden">
+                                    {% if event.image %}
+                                        <img src="{{ event.image.url }}"
+                                             alt="{{ event.name }}"
+                                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                             width="100%"
+                                             height="100%">
+                                    {% else %}
+                                        <div class="w-full h-full flex items-center justify-center">
+                                            <i class="fas fa-calendar-alt text-white text-4xl"></i>
+                                        </div>
+                                    {% endif %}
+                                    <!-- Status Badge -->
+                                    {% now "Y-m-d" as today %}
+                                    {% if event.date|date:"Y-m-d" > today %}
+                                        <div class="absolute top-3 right-3 bg-green-500 text-white px-2 py-1 rounded-full text-xs font-medium">Upcoming</div>
+                                    {% elif event.date|date:"Y-m-d" == today %}
+                                        <div class="absolute top-3 right-3 bg-orange-500 text-white px-2 py-1 rounded-full text-xs font-medium">Today</div>
+                                    {% else %}
+                                        <div class="absolute top-3 right-3 bg-gray-500 text-white px-2 py-1 rounded-full text-xs font-medium">Past</div>
+                                    {% endif %}
+                                </div>
+                                <!-- Event Content -->
+                                <div class="p-4">
+                                    <h3 class="font-bold text-gray-800 text-lg mb-2 group-hover:text-purple-600 transition-colors">{{ event.name }}</h3>
+                                    <div class="space-y-2 text-sm text-gray-600">
+                                        <div class="flex items-center gap-2">
+                                            <i class="fas fa-calendar text-purple-500"></i>
+                                            <span>{{ event.date }}</span>
+                                        </div>
+                                        <div class="flex items-center gap-2">
+                                            <i class="fas fa-clock text-blue-500"></i>
+                                            <span>{{ event.time|time:"h:i A" }}</span>
+                                        </div>
+                                        <div class="flex items-center gap-2">
+                                            <i class="fas fa-map-marker-alt text-red-500"></i>
+                                            <span>{{ event.location|truncatechars:30 }}</span>
+                                        </div>
+                                        <div class="flex items-center gap-2">
+                                            <i class="fas fa-tag text-green-500"></i>
+                                            <span>{{ event.category.name }}</span>
+                                        </div>
+                                    </div>
+                                    <!-- Action Buttons -->
+                                    <div class="mt-4 flex gap-2">
+                                        <a href="{% url 'event_details' event.id %}"
+                                           class="flex-1 bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white py-2 px-4 rounded-lg text-center text-sm font-medium transition-all duration-200">
+                                            View Details
+                                        </a>
+                                        {% now "Y-m-d" as today %}
+                                        {% if event.date|date:"Y-m-d" >= today %}
+                                            <form method="post"
+                                                  action="{% url 'cancel_rsvp' event.id %}"
+                                                  class="flex-shrink-0">
+                                                {% csrf_token %}
+                                                <button type="submit"
+                                                        class="bg-red-500 hover:bg-red-600 text-white py-2 px-3 rounded-lg text-sm font-medium transition-colors duration-200"
+                                                        onclick="return confirm('Are you sure you want to cancel your RSVP?')">
+                                                    <i class="fas fa-times"></i>
+                                                </button>
+                                            </form>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% else %}
+                <div class="p-12 text-center">
+                    <i class="fas fa-calendar-times text-6xl text-gray-300 mb-4"></i>
+                    <h3 class="text-xl font-semibold text-gray-700 mb-2">No RSVPs Yet</h3>
+                    <p class="text-gray-500 mb-6">Start exploring and RSVP to events you're interested in!</p>
+                    <a href="{% url 'home' %}" class="btn btn-primary">
+                        <i class="fas fa-search mr-2"></i>
+                        Browse Events
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    <!-- Available Events Section -->
+    {% if available_events %}
+        <div class="e-container e-my">
+            <div class="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+                <!-- Header -->
+                <div class="bg-gradient-to-r from-orange-500 to-red-500 p-6">
+                    <div class="flex items-center gap-3">
+                        <div class="bg-white/20 w-12 h-12 rounded-full flex items-center justify-center text-white shadow-lg">
+                            <i class="fas fa-search text-xl"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold text-white">Discover New Events</h2>
+                    </div>
+                </div>
+                <!-- Events Grid -->
+                <div class="p-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {% for event in available_events|slice:":6" %}
+                            <div class="group bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                                <!-- Event Image -->
+                                <div class="relative h-48 bg-gradient-to-r from-orange-400 to-red-500 overflow-hidden">
+                                    {% if event.image %}
+                                        <img src="{{ event.image.url }}"
+                                             alt="{{ event.name }}"
+                                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                             width="100%"
+                                             height="100%">
+                                    {% else %}
+                                        <div class="w-full h-full flex items-center justify-center">
+                                            <i class="fas fa-calendar-alt text-white text-4xl"></i>
+                                        </div>
+                                    {% endif %}
+                                    <!-- Participants Count -->
+                                    <div class="absolute top-3 left-3 bg-black/50 text-white px-2 py-1 rounded-full text-xs font-medium">
+                                        <i class="fas fa-users mr-1"></i>{{ event.participants.count }}
+                                    </div>
+                                </div>
+                                <!-- Event Content -->
+                                <div class="p-4">
+                                    <h3 class="font-bold text-gray-800 text-lg mb-2 group-hover:text-orange-600 transition-colors">{{ event.name }}</h3>
+                                    <div class="space-y-2 text-sm text-gray-600">
+                                        <div class="flex items-center gap-2">
+                                            <i class="fas fa-calendar text-purple-500"></i>
+                                            <span>{{ event.date }}</span>
+                                        </div>
+                                        <div class="flex items-center gap-2">
+                                            <i class="fas fa-clock text-blue-500"></i>
+                                            <span>{{ event.time|time:"h:i A" }}</span>
+                                        </div>
+                                        <div class="flex items-center gap-2">
+                                            <i class="fas fa-map-marker-alt text-red-500"></i>
+                                            <span>{{ event.location|truncatechars:30 }}</span>
+                                        </div>
+                                    </div>
+                                    <!-- Action Button -->
+                                    <div class="mt-4">
+                                        <a href="{% url 'event_details' event.id %}"
+                                           class="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white py-2 px-4 rounded-lg text-center text-sm font-medium transition-all duration-200 block">
+                                            View & RSVP
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    {% if available_events|length > 6 %}
+                        <div class="text-center mt-6">
+                            <a href="{% url 'home' %}" class="btn btn-outline">
+                                View All Events
+                                <i class="fas fa-arrow-right ml-2"></i>
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    {% include "shared/footer.html" %}
 {% endblock theme %}
