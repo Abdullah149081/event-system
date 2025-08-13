@@ -29,7 +29,11 @@ SECRET_KEY = config("SECRET_KEY")
 DEBUG = os.environ.get("DEBUG", "True") == "True"
 
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = (
+    config("ALLOWED_HOSTS", default="").split(",")
+    if config("ALLOWED_HOSTS", default="")
+    else ["*"]
+)
 
 
 # Application definition
@@ -111,18 +115,6 @@ DATABASES = {
         "NAME": BASE_DIR / "db.sqlite3",
     }
 }
-
-
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.postgresql",
-#         "NAME": "event_management",
-#         "USER": "postgres",
-#         "PASSWORD": "123456",
-#         "HOST": "localhost",
-#         "PORT": "5432",
-#     }
-# }
 
 
 # Password validation

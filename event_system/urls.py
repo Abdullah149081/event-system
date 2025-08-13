@@ -3,6 +3,7 @@ from django.urls import path, include
 from events.views import home, dashboard
 from django.conf import settings
 from django.conf.urls.static import static
+import debug_toolbar
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -14,10 +15,10 @@ urlpatterns = [
 ]
 
 if settings.DEBUG:
-    import debug_toolbar
+    try:
+        urlpatterns += [path("__debug__/", include(debug_toolbar.urls))]
+    except ImportError:
+        pass
 
-    urlpatterns += [path("__debug__/", include(debug_toolbar.urls))]
-
-
-# Ctrl + Shift + P
+# Serve media files in development
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
