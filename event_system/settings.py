@@ -57,7 +57,9 @@ INTERNAL_IPS = [
 ALLOWED_HOSTS = ["*"]
 CSRF_TRUSTED_ORIGINS = [
     "http://*.onrender.com",
+    "https://event-system-sc17.onrender.com",
     "http://127.0.0.1:8000",
+    "http://localhost:8000",
 ]
 
 TAILWIND_APP_NAME = "theme"
@@ -65,6 +67,7 @@ NPM_BIN_PATH = r"C:\Program Files\nodejs\npm.cmd"
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -144,10 +147,25 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = "static/"
+STATIC_URL = "/static/"
+
+# Development static files directories
 STATICFILES_DIRS = [
-    BASE_DIR / "events" / "static",  # or wherever your static folder is
+    BASE_DIR / "theme" / "static",
+    BASE_DIR / "events" / "static",
 ]
+
+# Production static files collection directory
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
+# Static files finders
+STATICFILES_FINDERS = [
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+]
+
+# WhiteNoise configuration for production static files
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
