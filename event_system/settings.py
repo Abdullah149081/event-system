@@ -61,10 +61,12 @@ INTERNAL_IPS = [
     # ...
 ]
 
-ALLOWED_HOSTS = ["*"]
 CSRF_TRUSTED_ORIGINS = [
+    "https://*.onrender.com",
     "http://*.onrender.com",
+    "https://event-system-sc17.onrender.com",
     "http://127.0.0.1:8000",
+    "http://localhost:8000",
 ]
 
 TAILWIND_APP_NAME = "theme"
