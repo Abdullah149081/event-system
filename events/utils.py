@@ -38,7 +38,7 @@ def optimize_image_for_web(image_field, max_width=1920, max_height=1080, quality
             original_width, original_height = img.size
 
             if original_width > max_width or original_height > max_height:
-                # Calculate scaling factor
+
                 width_ratio = max_width / original_width
                 height_ratio = max_height / original_height
                 scale_factor = min(width_ratio, height_ratio)
