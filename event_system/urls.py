@@ -3,7 +3,7 @@ from django.urls import path, include
 from events.views import home, dashboard
 from django.conf import settings
 from django.conf.urls.static import static
-import debug_toolbar
+from debug_toolbar.toolbar import debug_toolbar_urls
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -12,13 +12,7 @@ urlpatterns = [
     path("", home, name="home"),
     path("dashboard/", dashboard, name="dashboard"),
     path("__reload__/", include("django_browser_reload.urls")),
-]
-
-if settings.DEBUG:
-    try:
-        urlpatterns += [path("__debug__/", include(debug_toolbar.urls))]
-    except ImportError:
-        pass
+] + debug_toolbar_urls()
 
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
