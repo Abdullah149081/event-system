@@ -15,6 +15,8 @@ COMMANDS = {
     "makemigrations": "python manage.py makemigrations",
     "runserver": "python manage.py runserver",
     "tailwind": "python manage.py tailwind start",
+    "build": "python manage.py tailwind build",
+    "collectstatic": "python manage.py collectstatic --noinput",
     "start": "combined_start",
     "shell": "python manage.py shell_plus --ptpython",
     "drop": "python manage.py flush --no-input",

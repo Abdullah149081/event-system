@@ -149,26 +149,33 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 
-# Development static files directories
+
 STATICFILES_DIRS = [
     BASE_DIR / "theme" / "static",
     BASE_DIR / "events" / "static",
+    BASE_DIR / "media",
 ]
 
-# Production static files collection directory
+
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
-# Static files finders
+
 STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.FileSystemFinder",
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
 ]
 
-# WhiteNoise configuration for production static files
+
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
+
+
+if not DEBUG:
+    # In production, media files are served as static files
+    MEDIA_URL = "/static/"
 
 
 # Default primary key field type
