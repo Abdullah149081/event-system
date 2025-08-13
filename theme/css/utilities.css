@@ -1,0 +1,113 @@
+@layer utilities {
+  /* Modern Gradient Backgrounds */
+  .bg-gradient-primary {
+    background: linear-gradient(
+      135deg,
+      var(--primary) 0%,
+      var(--secondary) 100%
+    );
+  }
+
+  .bg-gradient-primary-light {
+    background: linear-gradient(
+      135deg,
+      var(--primary-light) 0%,
+      var(--secondary-light) 100%
+    );
+  }
+
+  .bg-gradient-success {
+    background: linear-gradient(
+      135deg,
+      var(--accent-green) 0%,
+      var(--primary) 100%
+    );
+  }
+
+  .bg-gradient-warning {
+    background: linear-gradient(
+      135deg,
+      var(--accent-orange) 0%,
+      var(--accent-red) 100%
+    );
+  }
+
+  .bg-gradient-danger {
+    background: linear-gradient(
+      135deg,
+      var(--accent-red) 0%,
+      var(--accent-pink) 100%
+    );
+  }
+
+  /* Text Gradients */
+  .text-gradient-primary {
+    background: linear-gradient(
+      135deg,
+      var(--primary) 0%,
+      var(--secondary) 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .text-gradient-success {
+    background: linear-gradient(
+      135deg,
+      var(--accent-green) 0%,
+      var(--primary) 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Modern Shadows */
+  .shadow-primary {
+    box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.1),
+      0 8px 10px -6px rgba(59, 130, 246, 0.1);
+  }
+
+  .shadow-secondary {
+    box-shadow: 0 10px 25px -5px rgba(139, 92, 246, 0.1),
+      0 8px 10px -6px rgba(139, 92, 246, 0.1);
+  }
+
+  .shadow-success {
+    box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.1),
+      0 8px 10px -6px rgba(16, 185, 129, 0.1);
+  }
+
+  /* Hover Effects */
+  .hover-lift {
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  }
+
+  .hover-lift:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+      0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Modern Borders */
+  .border-gradient-primary {
+    border: 1px solid;
+    border-image: linear-gradient(135deg, var(--primary), var(--secondary)) 1;
+  }
+
+  /* Glass Morphism */
+  .glass {
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+  }
+
+  .glass-dark {
+    background: rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+  }
+}

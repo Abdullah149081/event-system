@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+{% block title %}
+    Access Denied - {{ error_code }}
+{% endblock title %}
+{% block theme %}
+    {% include "shared/header.html" %}
+    <!-- Error Page Header -->
+    <div class="bg-gradient-to-r from-red-600 to-pink-600 text-white py-12">
+        <div class="e-container">
+            <div class="flex items-center gap-4">
+                <div class="bg-white/20 w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg">
+                    <i class="fas fa-exclamation-triangle text-2xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-3xl font-bold">{{ error_title }}</h1>
+                    <p class="text-red-100 mt-1">Access to this resource is restricted</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Error Content -->
+    <div class="e-container e-my">
+        <div class="max-w-4xl mx-auto">
+            <!-- Error Card -->
+            <div class="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+                <!-- Error Header -->
+                <div class="bg-gradient-to-r from-red-50 to-pink-50 p-8 border-b border-red-100">
+                    <div class="text-center">
+                        <div class="bg-gradient-to-r from-red-500 to-pink-500 w-24 h-24 rounded-full mx-auto mb-6 flex items-center justify-center text-white shadow-lg">
+                            <i class="fas fa-shield-alt text-4xl"></i>
+                        </div>
+                        <h2 class="text-4xl font-bold text-gray-800 mb-2">{{ error_code }}</h2>
+                        <h3 class="text-2xl font-semibold text-red-600 mb-4">{{ error_title }}</h3>
+                        <p class="text-lg text-gray-700 max-w-2xl mx-auto">{{ error_message }}</p>
+                    </div>
+                </div>
+                <!-- Error Details -->
+                <div class="p-8">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <!-- Current Status -->
+                        <div class="bg-gray-50 rounded-xl p-6">
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="bg-blue-100 w-12 h-12 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-user text-blue-600 text-xl"></i>
+                                </div>
+                                <h4 class="text-xl font-bold text-gray-800">Your Current Role</h4>
+                            </div>
+                            <div class="space-y-3">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-gray-600">Current Role:</span>
+                                    <span class="font-bold text-blue-600">{{ user_role|default:"Participant" }}</span>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-gray-600">Access Level:</span>
+                                    <span class="font-medium text-gray-700">Limited</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Required Access -->
+                        <div class="bg-green-50 rounded-xl p-6">
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="bg-green-100 w-12 h-12 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-key text-green-600 text-xl"></i>
+                                </div>
+                                <h4 class="text-xl font-bold text-gray-800">Required Access</h4>
+                            </div>
+                            <div class="space-y-3">
+                                <div class="flex items-center gap-2">
+                                    <i class="fas fa-check text-green-500"></i>
+                                    <span class="text-gray-700">Admin Role</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <i class="fas fa-check text-green-500"></i>
+                                    <span class="text-gray-700">Organizer Role</span>
+                                </div>
+                                <div class="bg-green-100 border border-green-200 rounded-lg p-3 mt-4">
+                                    <p class="text-sm text-green-800">
+                                        <i class="fas fa-info-circle mr-1"></i>
+                                        You need one of these roles to access this dashboard.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Action Buttons -->
+                    <div class="mt-8 text-center">
+                        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                            <a href="{% url 'home' %}" class="btn btn-primary">
+                                <i class="fas fa-home mr-2"></i>
+                                Go to Home Page
+                            </a>
+                            <a href="{% url 'dashboard' %}" class="btn btn-outline">
+                                <i class="fas fa-tachometer-alt mr-2"></i>
+                                Your Dashboard
+                            </a>
+                        </div>
+                        {% if suggested_action %}
+                            <div class="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-xl">
+                                <h5 class="font-semibold text-blue-800 mb-2">Need Access?</h5>
+                                <p class="text-blue-700">
+                                    <i class="fas fa-lightbulb mr-1"></i>
+                                    Please {{ suggested_action }} to gain the required permissions.
+                                </p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <!-- Help Section -->
+            <div class="mt-8 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-6 border border-blue-100">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="bg-blue-100 w-12 h-12 rounded-full flex items-center justify-center">
+                        <i class="fas fa-question-circle text-blue-600 text-xl"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-gray-800">What can I do?</h4>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-white rounded-lg p-4 border border-blue-200">
+                        <h5 class="font-semibold text-gray-800 mb-2">
+                            <i class="fas fa-calendar text-blue-500 mr-2"></i>
+                            Browse Events
+                        </h5>
+                        <p class="text-sm text-gray-600">View and discover upcoming events in your area.</p>
+                    </div>
+                    <div class="bg-white rounded-lg p-4 border border-blue-200">
+                        <h5 class="font-semibold text-gray-800 mb-2">
+                            <i class="fas fa-ticket-alt text-green-500 mr-2"></i>
+                            RSVP to Events
+                        </h5>
+                        <p class="text-sm text-gray-600">Register for events you're interested in attending.</p>
+                    </div>
+                    <div class="bg-white rounded-lg p-4 border border-blue-200">
+                        <h5 class="font-semibold text-gray-800 mb-2">
+                            <i class="fas fa-user text-purple-500 mr-2"></i>
+                            Manage Profile
+                        </h5>
+                        <p class="text-sm text-gray-600">Update your profile and view your RSVP history.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% include "shared/footer.html" %}
+{% endblock theme %}

@@ -169,6 +169,36 @@
             }
         });
     });
+
+    document.addEventListener('DOMContentLoaded', function() {
+    const navToggle = document.getElementById('nav-toggle');
+    const navMenu = document.getElementById('nav-menu');
+    const icon1 = document.getElementById('nav-icon-1');
+    const icon2 = document.getElementById('nav-icon-2');
+    const icon3 = document.getElementById('nav-icon-3');
+    
+    navToggle.addEventListener('click', function() {
+        const isOpen = navMenu.classList.contains('max-h-96');
+        
+        if (isOpen) {
+            navMenu.classList.remove('max-h-96', 'opacity-100');
+            navMenu.classList.add('max-h-0', 'opacity-0');
+            
+         
+            icon1.style.transform = 'rotate(0deg) translateY(0px)';
+            icon2.style.opacity = '1';
+            icon3.style.transform = 'rotate(0deg) translateY(0px)';
+        } else {
+            navMenu.classList.remove('max-h-0', 'opacity-0');
+            navMenu.classList.add('max-h-96', 'opacity-100');
+            
+           
+            icon1.style.transform = 'rotate(45deg) translateY(6px)';
+            icon2.style.opacity = '0';
+            icon3.style.transform = 'rotate(-45deg) translateY(-6px)';
+        }
+    });
+});
     </script>
   </body>
 </html>

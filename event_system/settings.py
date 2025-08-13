@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "widget_tweaks",
     "events",
     "users",
     "tailwind",
@@ -93,7 +94,6 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                "events.context_processors.navbar_context",
             ],
         },
     },
@@ -183,4 +183,4 @@ EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
 
 FRONTEND_URL = "http://127.0.0.1:8000"
 
-LOGIN_URL = "sign-in"
+LOGIN_URL = "sign_in"
