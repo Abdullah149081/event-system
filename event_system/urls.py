@@ -20,13 +20,5 @@ if settings.DEBUG:
     except ImportError:
         pass
 
-# Serve media and static files
-if settings.DEBUG:
-    # In development, serve media files directly
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-else:
-    # In production, media files are served through static files by WhiteNoise
-    urlpatterns += static(
-        settings.MEDIA_URL, document_root=settings.STATIC_ROOT / "media"
-    )
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

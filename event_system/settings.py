@@ -147,46 +147,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = "/static/"
-
+STATIC_URL = "static/"
 STATICFILES_DIRS = [
-    BASE_DIR / "theme" / "static",
-    BASE_DIR / "events" / "static",
+    BASE_DIR / "events" / "static",  # or wherever your static folder is
 ]
-
-STATIC_ROOT = BASE_DIR / "staticfiles"
-
-STATICFILES_FINDERS = [
-    "django.contrib.staticfiles.finders.FileSystemFinder",
-    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
-]
-
-STATICFILES_STORAGE = "event_system.storage.MediaFilesStorage"
-
-# Media files configuration
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
-
-# WhiteNoise configuration to serve media files in production
-WHITENOISE_USE_FINDERS = True
-WHITENOISE_SKIP_COMPRESS_EXTENSIONS = [
-    "jpg",
-    "jpeg",
-    "png",
-    "gif",
-    "webp",
-    "zip",
-    "gz",
-    "tgz",
-    "bz2",
-    "tbz",
-    "xz",
-    "br",
-]
-
-# In production, add media files to static collection
-if not DEBUG:
-    STATICFILES_DIRS.append(BASE_DIR / "media")
 
 
 # Default primary key field type
