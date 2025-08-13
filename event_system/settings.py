@@ -149,33 +149,44 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 
-
 STATICFILES_DIRS = [
     BASE_DIR / "theme" / "static",
     BASE_DIR / "events" / "static",
-    BASE_DIR / "media",
 ]
 
-
 STATIC_ROOT = BASE_DIR / "staticfiles"
-
 
 STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.FileSystemFinder",
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
 ]
 
+STATICFILES_STORAGE = "event_system.storage.MediaFilesStorage"
 
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
-
-
+# Media files configuration
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
+# WhiteNoise configuration to serve media files in production
+WHITENOISE_USE_FINDERS = True
+WHITENOISE_SKIP_COMPRESS_EXTENSIONS = [
+    "jpg",
+    "jpeg",
+    "png",
+    "gif",
+    "webp",
+    "zip",
+    "gz",
+    "tgz",
+    "bz2",
+    "tbz",
+    "xz",
+    "br",
+]
 
+# In production, add media files to static collection
 if not DEBUG:
-    # In production, media files are served as static files
-    MEDIA_URL = "/static/"
+    STATICFILES_DIRS.append(BASE_DIR / "media")
 
 
 # Default primary key field type

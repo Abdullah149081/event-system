@@ -1,2 +1,7 @@
 node_modules/
 .env
+copy_media.py
+deploy.py
+MEDIA_CONFIG.md
+test_production.py
+verify_config.py
